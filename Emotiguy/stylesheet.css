@@ -1,0 +1,7 @@
+body {
+    margin: 0;
+  }
+
+  .nav-container{
+    display: none !important;
+  }
