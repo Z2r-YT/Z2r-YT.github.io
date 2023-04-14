@@ -1,12 +1,17 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>emotiguy render real??!?!?</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script src="https://cdn.babylonjs.com/babylon.js"></script>
-    <script src="https://cdn.babylonjs.com/loaders/babylonjs.loaders.min.js"></script>
-    <script src="https://preview.babylonjs.com/gui/babylon.gui.min.js"></script>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-4ENSNPY8S7"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-4ENSNPY8S7');
+</script>
+    <meta charset="UTF-8" />
+    <title>Emotiguy In Browser</title>
     <meta content="Emoti 3D Viewer - In Browser!" property="og:title" />
     <meta content="Play around with emotiguy everywhere you go! He fits right into your browser, and works on most devices!" property="og:description" />
     <meta content="https://testing.duckwithsunglasses.com/emotiweb" property="og:url" />
@@ -14,14 +19,19 @@
     <meta content="https://testing.duckwithsunglasses.com/emotiweb/favicon.png" property="og:image" />
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="cache-control" content="max-age=0" />
-<meta http-equiv="cache-control" content="no-cache" />
-<meta http-equiv="expires" content="0" />
-<meta http-equiv="expires" content="Tue, 01 Jan 1980 1:00:00 GMT" />
-<meta http-equiv="pragma" content="no-cache" />
+    <meta http-equiv="cache-control" content="no-cache" />
+    <meta http-equiv="expires" content="0" />
+    <meta http-equiv="expires" content="Tue, 01 Jan 1980 1:00:00 GMT" />
+    <meta http-equiv="pragma" content="no-cache" />
     <link rel="icon" href="./favicon.ico" type="image/x-icon">
     <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon">
     <style>
-      :root {
+      body {
+        margin: 0;
+        overflow: hidden;
+      }
+      /**/
+            :root {
   --polka-bg-image:
     radial-gradient(rgb(54, 58, 52) 17.2%, transparent 17.2%),
     radial-gradient(rgb(54, 58, 52) 17.2%, transparent 17.2%);
@@ -204,153 +214,455 @@ input:checked + .checkslid:before {
 .controlls > *{
   margin-bottom: 10px;
 }
+
+#sliders{
+position: absolute;
+width: 200px;
+overflow: scroll;
+height: 50%;
+background: rgb(13,13,13);
+background: linear-gradient(0deg, rgba(13,13,13,1) 0%, rgba(36,36,36,1) 83%, rgba(17,17,17,1) 100%); 
+padding: 10px;
+border-radius: 15px;
+box-shadow: 0px 6px 16px rgba(0, 0, 0, 0.542);
+position: absolute;
+margin: 10px;
+border: solid rgba(255, 255, 255, 0.33);
+backdrop-filter: blur(10px);
+transform: scale(1.2);
+transform-origin: top left;
+ color: white;
+ right: 50px;
+ overflow-x: hidden;
+}
+
+#sliders > *{
+    margin: 10px;
+}
+
+.footer{
+    bottom: 0;
+position: fixed;
+text-align: center;
+color: white;
+opacity: 40%;
+left: 50%;
+  transform: translate(-50%, 0%);
+}
+
+a{
+    color: white;
+}
+
+.signature{
+position: absolute;
+pointer-events: none;
+opacity: 15%;
+scale: 20%;
+bottom: 0;
+left: 0;
+transform-origin: bottom left;
+margin: 20px;
+filter: contrast(0%);
+}
+
+.Props{
+        background: rgb(13,13,13);
+        background: linear-gradient(0deg, rgba(13,13,13,1) 0%, rgba(36,36,36,1) 83%, rgba(17,17,17,1) 100%); 
+        width: fit-content;
+        padding: 10px;
+        border-radius: 15px;
+        box-shadow: 0px 6px 16px rgba(0, 0, 0, 0.542);
+        position: absolute;
+        margin: 10px;
+        border: solid rgba(255, 255, 255, 0.33);
+        backdrop-filter: blur(10px);
+        transform: scale(1.2);
+        transform-origin: top left;
+        color: white;
+        top: 300px
+}
+
+.Props > label{
+    margin-bottom: 10px;
+}
     </style>
   </head>
+
   <body>
+
     <div id="loadingScreen">
-      <p>Loading Emoti, this may take a while...</p>
-      <div class="spinner"></div>
-      <p id="loadref">not working? after 15 seconds? Refresh the page</p>
-    </div>
-    
+        <p>Loading Emoti, this may take a while...</p>
+        <div class="spinner"></div>
+        <p id="loadref">not working? after 15 seconds? Refresh the page</p>
+      </div>
+
     <div class="controlls">
-      <input class="slider" type="range" id="focalLengthSlider" min="0" max="130" value="50">FOV<br>
-      <button id="resetCameraButton">Reset Camera</button><br>
-      <label class="switch">
-        <input type="checkbox" id="disableControlsCheckbox">
-        <span class="checkslid round"></span>
-      </label>Disable camera controls <br>
-      <label class="switch">
-        <input type="checkbox" id="wireframeCheckbox">
-        <span class="checkslid round"></span>
-      </label>Wireframe Mode <br>
-      <button id="saveScreenshotButton">Render Image</button>
-    </div>
-    <div id="morphSliders"></div>
-    <canvas id="renderCanvas"></canvas>
-  
+        <input class="slider" type="range" id="focalLengthSlider" min="0.1" max="130" value="50">FOV<br>
+        <button id="resetCameraButton">Reset Camera</button><br>
+        <label class="switch">
+          <input type="checkbox" id="disableControlsCheckbox">
+          <span class="checkslid round"></span>
+        </label>Disable camera controls <br>
+        <label class="switch">
+          <input type="checkbox" id="wireframeCheckbox">
+          <span class="checkslid round"></span>
+        </label>Wireframe Mode <br>
+        <button id="saveScreenshotButton">Render Image</button><br>
+      </div>
+
+      <div class="Props">
+        <p>Props: (please give a while to load!)</p>
+        <label class="switch">
+            <input type="checkbox" class="hotglasses">
+            <span class="checkslid round"></span>
+          </label>Wear Sunglasses <br>
+
+          <label class="switch">
+            <input type="checkbox" class="nerd">
+            <span class="checkslid round"></span>
+          </label>Nerd Glasses<br>
+
+          <label class="switch">
+            <input type="checkbox" class="halo">
+            <span class="checkslid round"></span>
+          </label>Angel Halo<br>
+
+        <label class="switch">
+            <input type="checkbox" class="goku">
+            <span class="checkslid round"></span>
+          </label>Goku Hair<br>
+
+          <label class="switch">
+            <input type="checkbox" class="tear">
+            <span class="checkslid round"></span>
+          </label>Tear<br>
+      </div>
+
+      <div class="signature"><img src="./textures/Signature.png"></div>
+
+      <div class="footer"><p>EmotiGuy model by <a href="https://www.daz3d.com/3d-universe">3D Universe</a>, Ported to Blender by <i>Mr. Emotiman II#7535</i>,<br> Web Build by <a href="https://duckwithsunglasses.com">Liam.</a> with &#10084;</p> </div>
+
+      <!--Thanks to my friend Notfire too, you're the best-->
+
+      <!--Libraries -- too lazy to build myself-->
+    <script src="./JS/three.min.js"></script>
+    <script src="./JS/GLTFLoader.js"></script>
+    <script src="./JS/OrbitControls.js"></script>
+    <script src="./JS/RGBELoader.js"></script>
+    
     <script>
-setTimeout(function() {
-  document.getElementById("loadref").style.display = "block";
-}, 15000);
-    </script>
+        setTimeout(function() {
+          document.getElementById("loadref").style.display = "block";
+        }, 15000);
+            </script>
+
+            <!--THIS MAKES THE WHOLE SCENE, STAY AWAY!!!!-->
     <script>
-var canvas = document.getElementById("renderCanvas");
-var engine = new BABYLON.Engine(canvas, true);
-var camera;
-var originalCameraPosition;
-var focalLengthSlider = document.getElementById("focalLengthSlider");
-var morphSliders = [];
-
-var createScene = function () {
-  var scene = new BABYLON.Scene(engine);
-
-  // Add loading screen
-  var loadingScreen = document.getElementById("loadingScreen");
-  loadingScreen.style.display = "flex";
-
-  // Adjust camera position and target
-  camera = new BABYLON.ArcRotateCamera("camera", -Math.PI/2, Math.PI/2, 12, new BABYLON.Vector3(0, 4, 6), scene);
-  originalCameraPosition = camera.position.clone(); // save the original camera position
-
-  var light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0), scene);
-
-  BABYLON.SceneLoader.ImportMesh("", "./models/", "emoti.glb", scene, function (newMeshes) {
-    var model = newMeshes[0];
-    model.scaling = new BABYLON.Vector3(0.5, 0.5, 0.5);
-
-    // Add material to the model
-    var material = new BABYLON.StandardMaterial("material", scene);
-    model.material = material;
-
-    // Add wireframe mode to the material
-    var wireframeCheckbox = document.getElementById("wireframeCheckbox");
-    wireframeCheckbox.addEventListener("change", function() {
-      material.wireframe = wireframeCheckbox.checked;
+// Create the scene, camera and renderer
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(
+  75,
+  window.innerWidth / window.innerHeight,
+  0.1,
+  1000
+);
+camera.position.z = 15; // Adjusted position value
+const renderer = new THREE.WebGLRenderer({
+        antialias: true,
+        clearColor: 0x000000,
+        clearAlpha: 0,
+        alpha: true,
+        preserveDrawingBuffer: true 
     });
+renderer.setSize(window.innerWidth, window.innerHeight);
+document.body.appendChild(renderer.domElement);
 
+// Add event listener to window object
+window.addEventListener('resize', () => {
+  // Update renderer size
+  renderer.setSize(window.innerWidth, window.innerHeight);
+
+  // Update camera aspect ratio
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+});
+
+        hemiLight = new THREE.HemisphereLight(0xffffff, 0x00000, 1);
+        scene.add(hemiLight);
+
+        light = new THREE.SpotLight(0xffffff,.5);
+        light.position.set(0,0,50);
+        scene.add( light );
+
+// Load the GLB file and add it to the scene
+const loader = new THREE.GLTFLoader();
+loader.load(
+  './models/emoticent.glb',
+  (gltf) => {
+    const mesh = gltf.scene.children[0];
+        // Set material properties to make it less shiny
+        mesh.material.roughness = 0.4; // Adjust roughness value (default is 0.5)
+    mesh.material.metalness = 0; // Set metalness to 0 to remove metal reflections
+
+    scene.add(mesh);
+
+    // Get all morph targets
+    const morphTargets = mesh.morphTargetDictionary;
+
+    // Create sliders for each morph target
+    const slidersDiv = document.createElement('div');
+    slidersDiv.id = 'sliders';
+    Object.keys(morphTargets).forEach((morphTarget) => {
+      const slider = document.createElement('input');
+      slider.type = 'range';
+      slider.min = 0;
+      slider.max = 1;
+      slider.step = 0.01;
+      slider.value = mesh.morphTargetInfluences[morphTargets[morphTarget]];
+      slider.addEventListener('input', () => {
+        mesh.morphTargetInfluences[morphTargets[morphTarget]] = parseFloat(slider.value);
+      });
+      slider.classList.add('slider'); // add the 'slider' class here
+      const label = document.createElement('label');
+      label.innerText = morphTarget;
+      slidersDiv.appendChild(label);
+      slidersDiv.appendChild(slider);
+    });
+    const body = document.body;
+const firstChild = body.firstChild;
+body.insertBefore(slidersDiv, firstChild);
+  },
+  undefined,
+  function (error) {
+    console.error(error);
+  }
+);
+
+
+// Create orbit controls
+const controls = new THREE.OrbitControls(camera, renderer.domElement);
+controls.target.set(0, 0, 0);
+controls.enableDamping = true;
+controls.dampingFactor = 0.05;
+controls.enableZoom = true;
+controls.zoomSpeed = 1;
+controls.enablePan = true;
+controls.panSpeed = 0.5;
+controls.rotateSpeed = 0.5;
+
+// Add animation loop
+const animate = function () {
+  requestAnimationFrame(animate);
+
+  // Update controls
+  controls.update();
+
+  // Render scene
+  renderer.render(scene, camera);
+};
+
+// Start animation loop
+animate();
 
   // Hide loading screen
   loadingScreen.style.opacity = "0";
-});  
-        return scene;
-      }
-  
-      var scene = createScene();
-      scene.clearColor = new BABYLON.Color4(0, 0, 0, 0.0);
-      engine.runRenderLoop(function () {
-        camera.fov = BABYLON.Tools.ToRadians(focalLengthSlider.value * 1.2 + 20);
-        scene.render();
-      });
-  
-      window.addEventListener("resize", function () {
-        engine.resize();
-      });
-      camera.attachControl(canvas, true);
-      // Disable or enable camera controls based on checkbox state
-      var checkbox = document.getElementById("disableControlsCheckbox");
-      checkbox.addEventListener("change", function() {
-        if (checkbox.checked) {
-          camera.detachControl(canvas);
-        } else {
-          camera.attachControl(canvas, true);
-        }
-      });
-  
-      // Add event listener to reset camera button
-      var resetCameraButton = document.getElementById("resetCameraButton");
-      resetCameraButton.addEventListener("click", function() {
-        camera.setPosition(originalCameraPosition); // set the camera position to its original position
-        camera.alpha = -Math.PI/2;
-        camera.beta = Math.PI/2;
-        camera.radius = 12;
-        camera.target = new BABYLON.Vector3(0, 4, 6);
-      });
+    </script>
 
-      var originalMaterials = {}; // object to store original materials
+<!--GENERAL SETTINGS BUTTONS-->
+    <script>
+// Get the slider element and reset button
+const slider = document.querySelector('#focalLengthSlider');
+const resetButton = document.querySelector('#resetCameraButton');
+const disableControlsCheckbox = document.querySelector('#disableControlsCheckbox');
+const wireframeCheckbox = document.querySelector('#wireframeCheckbox');
 
-// Toggle wireframe mode based on checkbox state
-var wireframeMaterial = new BABYLON.StandardMaterial("wireframe", scene);
-wireframeMaterial.wireframe = true;
-var wireframeCheckbox = document.getElementById("wireframeCheckbox");
-wireframeCheckbox.addEventListener("change", function() {
-  if (wireframeCheckbox.checked) {
-    scene.meshes.forEach(function(mesh) {
-      // Store the original material of the mesh
-      originalMaterials[mesh.id] = mesh.material;
-      // Set the wireframe material as the material of the mesh
-      mesh.material = wireframeMaterial;
-    });
+// Get the Three.js camera object and save its original position
+const originalPosition = new THREE.Vector3(0, 0, 15);
+camera.position.copy(originalPosition);
+
+// Set the initial value of the slider to the camera's current focal length
+slider.value = camera.getFocalLength();
+
+// Add an event listener to the slider that updates the camera's focal length when it's dragged
+slider.addEventListener('input', () => {
+  camera.setFocalLength(parseFloat(slider.value));
+});
+
+// Add an event listener to the reset button that puts the camera back to its original position
+resetButton.addEventListener('click', () => {
+  camera.position.copy(originalPosition);
+  camera.lookAt(new THREE.Vector3());
+});
+
+// Add an event listener to the disable controls checkbox that disables orbit controls when checked
+disableControlsCheckbox.addEventListener('change', () => {
+  if (disableControlsCheckbox.checked) {
+    controls.enabled = false;
   } else {
-    scene.meshes.forEach(function(mesh) {
-      // Restore the original material of the mesh
-      mesh.material = originalMaterials[mesh.id] || mesh.material;
-    });
-    originalMaterials = {}; // clear the object
+    controls.enabled = true;
   }
 });
 
+// Add an event listener to the wireframe checkbox that toggles wireframe mode when checked
+wireframeCheckbox.addEventListener('change', () => {
+  const model = scene.children.find(child => child.isMesh);
+  if (wireframeCheckbox.checked) {
+    model.material.wireframe = true;
+  } else {
+    model.material.wireframe = false;
+  }
+});
+
+var saveScreenshotButton = document.querySelector("#saveScreenshotButton");
+
+saveScreenshotButton.addEventListener("click", function(){
+    try {
+        var imgData = renderer.domElement.toDataURL();
+        var a = document.createElement("a");
+        a.href = imgData;
+        a.download = "screenshot.png";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+    } 
+    catch(e) {
+        console.log("Browser does not support taking screenshot of 3d context");
+        return;
+    }
+});
+
+const checkbox = document.querySelector('.hotglasses');
+
+checkbox.addEventListener('change', () => {
+  if (checkbox.checked) {
+    const loader = new THREE.GLTFLoader();
+    loader.load(
+      './models/glasses.glb',
+      (gltf) => {
+        const mesh = gltf.scene.children[0];
+        mesh.name = 'glasses'; // Set a name for the glasses object
+        scene.add(mesh);
+      },
+      undefined,
+      function (error) {
+        console.error(error);
+      }
+    );
+  } else {
+    // If checkbox is unchecked, remove the glasses from the scene
+    const glasses = scene.getObjectByName('glasses');
+    if (glasses) {
+      scene.remove(glasses);
+    }
+  }
+});
     </script>
+                <!--THIS ENABLES PROPS-->
+    <script>
+const checkbox2 = document.querySelector('.goku');
 
-<script>
-  // Add event listener to save screenshot button
-  var saveScreenshotButton = document.getElementById("saveScreenshotButton");
-  saveScreenshotButton.addEventListener("click", function() {
-    // Render image to PNG
-    BABYLON.Tools.CreateScreenshotUsingRenderTarget(engine, camera, {
-      width: canvas.width,
-      height: canvas.height
-    }, function(data) {
-      // Create a download link and click it to download the PNG file
-      var a = document.createElement("a");
-      a.href = data;
-      a.download = "Render.png";
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-    });
-  });
-</script>
+checkbox2.addEventListener('change', () => {
+  if (checkbox2.checked) {
+    const loader = new THREE.GLTFLoader();
+    loader.load(
+      './models/props/goku.glb',
+      (gltf) => {
+        const mesh = gltf.scene.children[0];
+        mesh.name = 'goku'; // Set a name for the glasses object
+        scene.add(mesh);
+      },
+      undefined,
+      function (error) {
+        console.error(error);
+      }
+    );
+  } else {
+    // If checkbox is unchecked, remove the glasses from the scene
+    const goku = scene.getObjectByName('goku');
+    if (goku) {
+      scene.remove(goku);
+    }
+  }
+});
+
+const checkbox3 = document.querySelector('.nerd');
+
+checkbox3.addEventListener('change', () => {
+  if (checkbox3.checked) {
+    const loader = new THREE.GLTFLoader();
+    loader.load(
+      './models/props/nerd.glb',
+      (gltf) => {
+        const mesh = gltf.scene.children[0];
+        mesh.name = 'nerd'; // Set a name for the glasses object
+        scene.add(mesh);
+      },
+      undefined,
+      function (error) {
+        console.error(error);
+      }
+    );
+  } else {
+    // If checkbox is unchecked, remove the glasses from the scene
+    const nerd = scene.getObjectByName('nerd');
+    if (nerd) {
+      scene.remove(nerd);
+    }
+  }
+});
+
+const checkbox4 = document.querySelector('.halo');
+
+checkbox4.addEventListener('change', () => {
+  if (checkbox4.checked) {
+    const loader = new THREE.GLTFLoader();
+    loader.load(
+      './models/props/halo.glb',
+      (gltf) => {
+        const mesh = gltf.scene.children[0];
+        mesh.name = 'halo'; // Set a name for the glasses object
+        scene.add(mesh);
+      },
+      undefined,
+      function (error) {
+        console.error(error);
+      }
+    );
+  } else {
+    // If checkbox is unchecked, remove the glasses from the scene
+    const halo = scene.getObjectByName('halo');
+    if (halo) {
+      scene.remove(halo);
+    }
+  }
+});
+
+const checkbox5 = document.querySelector('.tear');
+
+checkbox5.addEventListener('change', () => {
+  if (checkbox5.checked) {
+    const loader = new THREE.GLTFLoader();
+    loader.load(
+      './models/props/tear.glb',
+      (gltf) => {
+        const mesh = gltf.scene.children[0];
+        mesh.name = 'tear'; // Set a name for the glasses object
+        scene.add(mesh);
+      },
+      undefined,
+      function (error) {
+        console.error(error);
+      }
+    );
+  } else {
+    // If checkbox is unchecked, remove the glasses from the scene
+    const tear = scene.getObjectByName('tear');
+    if (tear) {
+      scene.remove(tear);
+    }
+  }
+});
+    </script>
   </body>
-
 </html>
