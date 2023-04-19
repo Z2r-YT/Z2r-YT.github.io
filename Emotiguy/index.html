@@ -5,14 +5,9 @@
     <title>Emotiguy In Browser</title>
     <meta content="Emoti 3D Viewer - In Browser!" property="og:title" />
     <meta content="Play around with emotiguy everywhere you go! He fits right into your browser, and works on most devices!" property="og:description" />
+    <meta content="https://testing.duckwithsunglasses.com/emotiweb" property="og:url" />
     <meta content="#e7c81c" data-react-helmet="true" name="theme-color" />
-    <meta content="favicon.png" property="og:image" />
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="cache-control" content="max-age=0" />
-    <meta http-equiv="cache-control" content="no-cache" />
-    <meta http-equiv="expires" content="0" />
-    <meta http-equiv="expires" content="Tue, 01 Jan 1980 1:00:00 GMT" />
-    <meta http-equiv="pragma" content="no-cache" />
+    <meta content="https://testing.duckwithsunglasses.com/emotiweb/favicon.png" property="og:image" />
     <link rel="icon" href="./favicon.ico" type="image/x-icon">
     <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon">
     <style>
@@ -556,7 +551,7 @@ checkbox2.addEventListener('change', () => {
   if (checkbox2.checked) {
     const loader = new THREE.GLTFLoader();
     loader.load(
-      './models/props/goku.glb',
+      './models/Props/goku.glb',
       (gltf) => {
         const mesh = gltf.scene.children[0];
         mesh.name = 'goku'; // Set a name for the glasses object
@@ -582,7 +577,7 @@ checkbox3.addEventListener('change', () => {
   if (checkbox3.checked) {
     const loader = new THREE.GLTFLoader();
     loader.load(
-      './models/props/nerd.glb',
+      './models/Props/nerd.glb',
       (gltf) => {
         const mesh = gltf.scene.children[0];
         mesh.name = 'nerd'; // Set a name for the glasses object
@@ -608,7 +603,7 @@ checkbox4.addEventListener('change', () => {
   if (checkbox4.checked) {
     const loader = new THREE.GLTFLoader();
     loader.load(
-      './models/props/halo.glb',
+      './models/Props/halo.glb',
       (gltf) => {
         const mesh = gltf.scene.children[0];
         mesh.name = 'halo'; // Set a name for the glasses object
@@ -634,7 +629,7 @@ checkbox5.addEventListener('change', () => {
   if (checkbox5.checked) {
     const loader = new THREE.GLTFLoader();
     loader.load(
-      './models/props/tear.glb',
+      './models/Props/tear.glb',
       (gltf) => {
         const mesh = gltf.scene.children[0];
         mesh.name = 'tear'; // Set a name for the glasses object
