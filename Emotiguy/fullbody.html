@@ -30,10 +30,6 @@
         margin: 0;
         overflow: hidden;
       }
-
-      *{
-        cursor: url("./cursor.png"), auto;
-      }
       /**/
             :root {
   --polka-bg-image:
@@ -305,31 +301,6 @@ div{
   background-image: none !important;
   color: #00ff00;
 }
-
-.textures{
-position: absolute;
-width: 200px;
-overflow: scroll;
-height: 10%;
-background: rgb(13,13,13);
-background: linear-gradient(0deg, rgba(13,13,13,1) 0%, rgba(36,36,36,1) 83%, rgba(17,17,17,1) 100%); 
-padding: 10px;
-border-radius: 15px;
-box-shadow: 0px 6px 16px rgba(0, 0, 0, 0.542);
-position: absolute;
-margin: 10px;
-border: solid rgba(255, 255, 255, 0.33);
-backdrop-filter: blur(10px);
-transform: scale(1.2);
-transform-origin: top left;
- color: white;
- right: 350px;
- overflow-x: hidden;
-}
-
-.textures > input{
-  margin-top: 10px;
-}
     </style>
   </head>
 
@@ -338,7 +309,7 @@ transform-origin: top left;
     <div id="loadingScreen">
         <p>Loading Emoti, this may take a while...</p>
         <div class="spinner"></div>
-        <p id="loadref">not working? after 15 seconds? Refresh the page</p>
+        <p id="loadref">this is loading a 60mb file. just be patient. if it doesnt load after a minute or two, check the console log for errors</p>
       </div>
 
     <div class="controlls">
@@ -406,7 +377,7 @@ transform-origin: top left;
     <script>
         setTimeout(function() {
           document.getElementById("loadref").style.display = "block";
-        }, 15000);
+        }, 5000);
             </script>
 
             <!--THIS MAKES THE WHOLE SCENE, STAY AWAY!!!!-->
@@ -450,11 +421,11 @@ window.addEventListener('resize', () => {
 // Load the GLB file and add it to the scene
 const loader = new THREE.GLTFLoader();
 loader.load(
-  './models/emoticent.glb',
+  './models/emotirigfull.glb',
   (gltf) => {
 
-                    // Once the model is loaded, hide the loading screen
-                    const loadingScreen = document.getElementById('loadingScreen');
+        // Once the model is loaded, hide the loading screen
+        const loadingScreen = document.getElementById('loadingScreen');
     loadingScreen.style.opacity = 1;
     (function fadeOut() {
       if ((loadingScreen.style.opacity -= 0.1) < 0) {
@@ -463,16 +434,19 @@ loader.load(
         requestAnimationFrame(fadeOut);
       }
     })();
-
+    
     const mesh = gltf.scene.children[0];
-        // Set material properties to make it less shiny
-        mesh.material.roughness = 0.4; // Adjust roughness value (default is 0.5)
-    mesh.material.metalness = 0; // Set metalness to 0 to remove metal reflections
+
 
     scene.add(mesh);
 
-    // Get all morph targets
-    const morphTargets = mesh.morphTargetDictionary;
+    console.log(mesh.children);
+
+    // Get the child mesh with name 'EmotiShoes_11630004_8'
+    const childMesh = mesh.getObjectByName('EmotiShoes_11630005_8');
+
+    // Get all morph targets for the child mesh
+    const morphTargets = childMesh.morphTargetDictionary;
 
     // Create sliders for each morph target
     const slidersDiv = document.createElement('div');
@@ -483,26 +457,26 @@ loader.load(
       slider.min = 0;
       slider.max = 1;
       slider.step = 0.01;
-      slider.value = mesh.morphTargetInfluences[morphTargets[morphTarget]];
+      slider.value = childMesh.morphTargetInfluences[morphTargets[morphTarget]];
       slider.addEventListener('input', () => {
-        mesh.morphTargetInfluences[morphTargets[morphTarget]] = parseFloat(slider.value);
+        childMesh.morphTargetInfluences[morphTargets[morphTarget]] = parseFloat(slider.value);
       });
-      slider.classList.add('slider'); // add the 'slider' class here
+      slider.classList.add('slider');
       const label = document.createElement('label');
       label.innerText = morphTarget;
       slidersDiv.appendChild(label);
       slidersDiv.appendChild(slider);
     });
+    
     const body = document.body;
-const firstChild = body.firstChild;
-body.insertBefore(slidersDiv, firstChild);
+    const firstChild = body.firstChild;
+    body.insertBefore(slidersDiv, firstChild);
   },
   undefined,
   function (error) {
     console.error(error);
   }
 );
-
 
 // Create orbit controls
 const controls = new THREE.OrbitControls(camera, renderer.domElement);
@@ -868,7 +842,7 @@ function cropCanvasToAlphaBounds(canvas) {
   </script>
 
   <script>
-// Define the Konami code sequence
+    // Define the Konami code sequence
 const konamiCode = ["ArrowUp", "ArrowUp", "ArrowDown", "ArrowDown", "ArrowLeft", "ArrowRight", "ArrowLeft", "ArrowRight", "b", "a"];
 
 // Keep track of the index of the next key to be pressed
@@ -891,10 +865,8 @@ document.addEventListener("keydown", function(event) {
     // Reset the index of the next key to be pressed if the pressed key does not match the next key in the Konami code sequence
     konamiIndex = 0;
   }
-  // Prevent the default action of the pressed key (e.g. scrolling) if the pressed key is not F5
-  if (event.key !== "F5") {
-    event.preventDefault();
-  }
+  // Prevent the default action of the pressed key (e.g. scrolling)
+  event.preventDefault();
 });
 
 // Add an event listener to the document for keyup events

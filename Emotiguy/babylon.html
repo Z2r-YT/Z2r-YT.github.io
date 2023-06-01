@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>emotiguy render real??!?!?</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://cdn.babylonjs.com/babylon.js"></script>
+    <script src="https://cdn.babylonjs.com/loaders/babylonjs.loaders.min.js"></script>
+    <script src="https://preview.babylonjs.com/gui/babylon.gui.min.js"></script>
+    <meta content="Emoti 3D Viewer - In Browser!" property="og:title" />
+    <meta content="Play around with emotiguy everywhere you go! He fits right into your browser, and works on most devices!" property="og:description" />
+    <meta content="https://testing.duckwithsunglasses.com/emotiweb" property="og:url" />
+    <meta content="#e7c81c" data-react-helmet="true" name="theme-color" />
+    <meta content="https://testing.duckwithsunglasses.com/emotiweb/favicon.png" property="og:image" />
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="cache-control" content="max-age=0" />
+<meta http-equiv="cache-control" content="no-cache" />
+<meta http-equiv="expires" content="0" />
+<meta http-equiv="expires" content="Tue, 01 Jan 1980 1:00:00 GMT" />
+<meta http-equiv="pragma" content="no-cache" />
+    <link rel="icon" href="./favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon">
+    <style>
+      :root {
+  --polka-bg-image:
+    radial-gradient(rgb(54, 58, 52) 17.2%, transparent 17.2%),
+    radial-gradient(rgb(54, 58, 52) 17.2%, transparent 17.2%);
+  --polka-bg-position: 0px 0px, 8px 8px;
+  --polka-bg-size: 16px 16px;
+  --polka-bg-color: rgb(59, 59, 59);
+}
+
+      html, body {
+        user-select: none;
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        overflow: hidden;
+        font-family: sans-serif;
+        background-image: 
+    radial-gradient(rgb(54, 58, 52) 17.2%, transparent 17.2%),
+    radial-gradient(rgb(54, 58, 52) 17.2%, transparent 17.2%);
+  background-position: 0px 0px, 8px 8px;
+  background-size: 16px 16px;
+  background-color: rgb(59, 59, 59);
+      }
+      #renderCanvas {
+        width: 100%;
+        height: 100%;
+      }
+      .controlls{
+        background: rgb(13,13,13);
+        background: linear-gradient(0deg, rgba(13,13,13,1) 0%, rgba(36,36,36,1) 83%, rgba(17,17,17,1) 100%); 
+        width: fit-content;
+        padding: 10px;
+        border-radius: 15px;
+        box-shadow: 0px 6px 16px rgba(0, 0, 0, 0.542);
+        position: absolute;
+        margin: 10px;
+        border: solid rgba(255, 255, 255, 0.33);
+        backdrop-filter: blur(10px);
+        transform: scale(1.2);
+        transform-origin: top left;
+        color: white;
+      }
+      button:hover{
+        cursor: pointer;
+      }
+      input:hover{
+        cursor:pointer;
+      }
+      #loadingScreen {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #333;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 1;
+  transition-duration: 1s;
+  pointer-events: none;
+  flex-direction: column;
+}
+
+.spinner {
+  background-image: url("favicon.png");
+  background-size: cover ;
+  border-radius: 50%;
+  width: 80px;
+  height: 80px;
+  animation: spin 1s linear infinite;
+  margin-left: 12px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+#loadref{
+  display: none;
+}
+a{
+  pointer-events: visibleFill !important;
+}
+
+button{
+  background: rgb(23,23,23);
+background: linear-gradient(0deg, rgba(23,23,23,1) 0%, rgba(23,23,23,1) 49%, rgba(50,48,45,1) 49%, rgba(99,100,99,1) 100%); 
+border: solid rgba(255, 255, 255, 0.247);
+color: white;
+border-radius: 5px;
+}
+
+.slider {
+  -webkit-appearance: none;
+  height: 10px;
+  background: linear-gradient(#e3e3e3, #8e908f);
+  border-radius: 50000px;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 25px;
+  height: 25px;
+  background-image: url("./slider.png");
+cursor: pointer;
+background-size: contain;
+border-radius: 50000px;
+box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.479);
+}
+
+.slider::-moz-range-thumb {
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  background-image: url("./slider.png");
+cursor: pointer;
+background-size: contain;
+border-radius: 50000px;
+box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.479);
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 35px;
+  height: 22px;
+}
+
+.switch input { 
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.checkslid {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(#9d9d9d,#bfbfbf);
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.checkslid:before {
+  position: absolute;
+  content: "";
+  width: 15px;
+  height: 15px;
+  left: 4px;
+  bottom: 4px;
+  background: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .checkslid {
+  background: linear-gradient(#1755d1,#4a76ce);
+}
+
+input:checked + .checkslid:before {
+  -webkit-transform: translateX(12px);
+  -ms-transform: translateX(12px);
+  transform: translateX(12px);
+}
+
+/* Rounded sliders */
+.checkslid.round {
+  border-radius: 34px;
+}
+
+.checkslid.round:before {
+  border-radius: 50%;
+}
+
+.controlls > *{
+  margin-bottom: 10px;
+}
+    </style>
+  </head>
+  <body>
+    <div id="loadingScreen">
+      <p>Loading Emoti, this may take a while...</p>
+      <div class="spinner"></div>
+      <p id="loadref">not working? after 15 seconds? Refresh the page</p>
+    </div>
+    
+    <div class="controlls">
+      <input class="slider" type="range" id="focalLengthSlider" min="0" max="130" value="50">FOV<br>
+      <button id="resetCameraButton">Reset Camera</button><br>
+      <label class="switch">
+        <input type="checkbox" id="disableControlsCheckbox">
+        <span class="checkslid round"></span>
+      </label>Disable camera controls <br>
+      <label class="switch">
+        <input type="checkbox" id="wireframeCheckbox">
+        <span class="checkslid round"></span>
+      </label>Wireframe Mode <br>
+      <button id="saveScreenshotButton">Render Image</button>
+    </div>
+    <div id="morphSliders"></div>
+    <canvas id="renderCanvas"></canvas>
+  
+    <script>
+setTimeout(function() {
+  document.getElementById("loadref").style.display = "block";
+}, 15000);
+    </script>
+    <script>
+var canvas = document.getElementById("renderCanvas");
+var engine = new BABYLON.Engine(canvas, true);
+var camera;
+var originalCameraPosition;
+var focalLengthSlider = document.getElementById("focalLengthSlider");
+var morphSliders = [];
+
+var createScene = function () {
+  var scene = new BABYLON.Scene(engine);
+
+  // Add loading screen
+  var loadingScreen = document.getElementById("loadingScreen");
+  loadingScreen.style.display = "flex";
+
+  // Adjust camera position and target
+  camera = new BABYLON.ArcRotateCamera("camera", -Math.PI/2, Math.PI/2, 12, new BABYLON.Vector3(0, 4, 6), scene);
+  originalCameraPosition = camera.position.clone(); // save the original camera position
+
+  var light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0), scene);
+
+  BABYLON.SceneLoader.ImportMesh("", "./models/", "emoti.glb", scene, function (newMeshes) {
+    var model = newMeshes[0];
+    model.scaling = new BABYLON.Vector3(0.5, 0.5, 0.5);
+
+    // Add material to the model
+    var material = new BABYLON.StandardMaterial("material", scene);
+    model.material = material;
+
+    // Add wireframe mode to the material
+    var wireframeCheckbox = document.getElementById("wireframeCheckbox");
+    wireframeCheckbox.addEventListener("change", function() {
+      material.wireframe = wireframeCheckbox.checked;
+    });
+
+
+  // Hide loading screen
+  loadingScreen.style.opacity = "0";
+});  
+        return scene;
+      }
+  
+      var scene = createScene();
+      scene.clearColor = new BABYLON.Color4(0, 0, 0, 0.0);
+      engine.runRenderLoop(function () {
+        camera.fov = BABYLON.Tools.ToRadians(focalLengthSlider.value * 1.2 + 20);
+        scene.render();
+      });
+  
+      window.addEventListener("resize", function () {
+        engine.resize();
+      });
+      camera.attachControl(canvas, true);
+      // Disable or enable camera controls based on checkbox state
+      var checkbox = document.getElementById("disableControlsCheckbox");
+      checkbox.addEventListener("change", function() {
+        if (checkbox.checked) {
+          camera.detachControl(canvas);
+        } else {
+          camera.attachControl(canvas, true);
+        }
+      });
+  
+      // Add event listener to reset camera button
+      var resetCameraButton = document.getElementById("resetCameraButton");
+      resetCameraButton.addEventListener("click", function() {
+        camera.setPosition(originalCameraPosition); // set the camera position to its original position
+        camera.alpha = -Math.PI/2;
+        camera.beta = Math.PI/2;
+        camera.radius = 12;
+        camera.target = new BABYLON.Vector3(0, 4, 6);
+      });
+
+      var originalMaterials = {}; // object to store original materials
+
+// Toggle wireframe mode based on checkbox state
+var wireframeMaterial = new BABYLON.StandardMaterial("wireframe", scene);
+wireframeMaterial.wireframe = true;
+var wireframeCheckbox = document.getElementById("wireframeCheckbox");
+wireframeCheckbox.addEventListener("change", function() {
+  if (wireframeCheckbox.checked) {
+    scene.meshes.forEach(function(mesh) {
+      // Store the original material of the mesh
+      originalMaterials[mesh.id] = mesh.material;
+      // Set the wireframe material as the material of the mesh
+      mesh.material = wireframeMaterial;
+    });
+  } else {
+    scene.meshes.forEach(function(mesh) {
+      // Restore the original material of the mesh
+      mesh.material = originalMaterials[mesh.id] || mesh.material;
+    });
+    originalMaterials = {}; // clear the object
+  }
+});
+
+    </script>
+
+<script>
+  // Add event listener to save screenshot button
+  var saveScreenshotButton = document.getElementById("saveScreenshotButton");
+  saveScreenshotButton.addEventListener("click", function() {
+    // Render image to PNG
+    BABYLON.Tools.CreateScreenshotUsingRenderTarget(engine, camera, {
+      width: canvas.width,
+      height: canvas.height
+    }, function(data) {
+      // Create a download link and click it to download the PNG file
+      var a = document.createElement("a");
+      a.href = data;
+      a.download = "Render.png";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    });
+  });
+</script>
+  </body>
+
+</html>
